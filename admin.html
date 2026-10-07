@@ -29,6 +29,21 @@
       <a href="contact.html">Contact</a>
     </nav>
   </header>
+<script>
+  firebase.auth().onAuthStateChanged(user => {
+    if (!user) {
+      // Not logged in → redirect back to login page
+      window.location.href = "index.html";
+    } else {
+      // Only allow specific admin email
+      if (user.email !== "youradminemail@gmail.com") {
+        alert("Access denied. Not an admin.");
+        firebase.auth().signOut();
+        window.location.href = "index.html";
+      }
+    }
+  });
+</script>
 
   <section class="content">
     <h2>Welcome, Dipali!</h2>
