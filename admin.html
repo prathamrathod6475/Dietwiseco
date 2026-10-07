@@ -54,5 +54,15 @@
       <li>Private Admin Notes</li>
     </ul>
   </section>
+  <script>
+  function logout() {
+    firebase.auth().signOut().then(() => {
+      // Redirect back to login page after logout
+      window.location.href = "index.html";
+    }).catch(error => {
+      alert("Error logging out: " + error.message);
+    });
+  }
+</script>
 </body>
 </html>
