@@ -1,24 +1,36 @@
-// Simple login validation (demo only)
+const auth = firebase.auth();
+
+// Client Login
 function clientLogin() {
   const email = document.getElementById("clientEmail").value;
   const password = document.getElementById("clientPassword").value;
 
-  if (email && password) {
-    // Redirect to client dashboard
-    window.location.href = "client.html";
-  } else {
-    alert("Please enter email and password.");
-  }
+  auth.signInWithEmailAndPassword(email, password)
+    .then(() => {
+      window.location.href = "client.html"; // only if login succeeds
+    })
+    .catch(error => {
+      alert("Login failed: " + error.message);
+    });
 }
 
+// Admin Login
 function adminLogin() {
-  const username = document.getElementById("adminUser").value;
+  const email = document.getElementById("adminUser").value;
   const password = document.getElementById("adminPassword").value;
 
-  if (username === "admin" && password === "admin123") {
-    // Redirect to admin dashboard
-    window.location.href = "admin.html";
-  } else {
-    alert("Invalid admin credentials.");
-  }
+  auth.signInWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      const user = userCredential.user;
+      // Only allow specific admin email
+      if (user.email === "youradminemail@gmail.com") {
+        window.location.href = "admin.html";
+      } else {
+        alert("Access denied. Not an admin.");
+        auth.signOut();
+      }
+    })
+    .catch(error => {
+      alert("Login failed: " + error.message);
+    });
 }
